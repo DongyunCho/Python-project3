@@ -1,0 +1,107 @@
+"""
+This project is all about Calendar!
+With this calendar, users can view, add events, update and even delete!
+"""
+
+from time import sleep, strftime
+from random import randint
+
+USER_FIRST_NAME = "Cho"
+calendar = {}
+luck = [
+    "You're a smooth operator today.",
+    "Dealings with other people won\'t be staightforward today.",
+    "Give yourself time to think.",
+    "As the day progresses, you come out of your shell." 
+    ] 
+
+
+def welcome():
+  print "Welcom Dong's calendar,"+ USER_FIRST_NAME,"."
+  print "Calendar starting..."
+  sleep(1)
+  #sleep(2) WHY Unexpected indent???
+  print "Today is "+ strftime("%A %b %d, %Y")
+  print "Current time is "+strftime("%H:%M:%S")
+  print "Daily fortune:", "".join(luck[randint(0,3)])
+  print "What would you like to do?"
+
+def start_calendar():
+  welcome()
+  start = True
+  while start:
+    print
+    user_choice = raw_input("A to Add, V to View, U to Update, D to Delete, Z to Exit:")
+    user_choice = user_choice.upper()
+    
+    if user_choice == "V":
+      if len(calendar.keys())==0:
+        print "Calendar empty"
+      else:
+        print calendar
+        
+    elif user_choice == "U1":
+      while True:
+        date = raw_input("What date do you want to change(MM/DD/YYYY):")
+        if date not in calendar:
+          print date," is invaild"
+          exist = False#--->but it repeat!!!
+        else: 
+          event = raw_input("To what event:")
+          calendar[date] = event#ADD FUNCTION to check if the date is vaild or if it already exists
+          print "New date is successfully added"
+          print calendar
+          break
+          
+    elif user_choice == "U2":
+      while True:
+        event = raw_input("What event do you want to change?")
+        for date in calendar:
+          if calendar[date]==event:
+            date = raw_input("To what date")
+            calendar[date] = event
+            print calendar
+        break
+        if event != calendar[date]:
+          print event, " is invaild"
+          
+      
+    elif user_choice == "A":
+      event = raw_input("Enter event: ")
+      date = raw_input("Enter date(MM/DD/YYYY):")
+      if len(date) >10 or int(date[6:]) < int(strftime("%Y")):
+        print "Invaild date was enterd"
+        try_again = (raw_input("Try Again? \
+        Y for Yes, N for No: ")).upper()
+        if try_again == "Y":
+          continue#REFERENCE AGAIN!!
+        else:
+          start = False # N.33 reference!!!!!
+      else: 
+        calendar[date] = event
+        print "Successfully added"
+        
+    elif user_choice == "D":
+      if len(calendar.keys())<1: #SEARCH THIS!!!
+        print "Calendar is now empty!"
+      else:
+        event = raw_input("What event do you want to delete?")
+        found = False
+        for date in calendar.keys():
+          if calendar[date] == event:
+            del calendar[date]
+            print("The event was deleted!")
+            print(calendar)
+            found = True
+        if(found == False):
+          print("Event not found")
+            
+    elif user_choice == "X":
+      print "Good bye ",USER_FIRST_NAME 
+      start = False
+    else:
+      print "Invaild command entered"
+      print 
+      
+        
+start_calendar()
